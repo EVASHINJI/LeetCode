@@ -6,7 +6,7 @@
 # Input: "a-bC-dEf-ghIj"
 # Output: "j-Ih-gfE-dCba"
 
-# Creative Use Stack to Reve
+# Creative Use Stack to Reverse
 
 
 class Solution:
