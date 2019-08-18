@@ -20,8 +20,8 @@ class Solution:
                 stack.pop()
             prv[i] = stack[-1] if stack else -1
             stack.append(i)
-        
         stack = []
+        
         for i in range(N-1, -1, -1):
             while stack and A[i] < A[stack[-1]]:
                 stack.pop()
