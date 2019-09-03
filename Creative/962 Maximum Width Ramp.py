@@ -14,6 +14,9 @@
 # Explanation: 
 # The maximum width ramp is achieved at (i, j) = (2, 9): A[2] = 1 and A[9] = 1.
 
+# Creative
+# Sorted by the val, return the origin idx of sorted arr
+
 
 class Solution:
     def maxWidthRamp(self, A: List[int]) -> int:

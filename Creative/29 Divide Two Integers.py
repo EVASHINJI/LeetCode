@@ -1,4 +1,4 @@
-# Url: https://leetcode.com/problems/fraction-to-recurring-decimal/
+# Url: https://leetcode.com/problems/divide-two-integers/
 # Related Topics:
 # Math BinarySearch
 
@@ -11,22 +11,22 @@
 
 
 class Solution:
-    def fractionToDecimal(self, numerator, denominator):
+    def divide(self, dividend, divisor):
         """
-        :type numerator: int
-        :type denominator: int
-        :rtype: str
+        :type dividend: int
+        :type divisor: int
+        :rtype: int
         """
-        n, remainder = divmod(abs(numerator), abs(denominator))
-        sign = '-' if numerator*denominator < 0 else ''
-        result = [sign+str(n), '.']
-        stack = []
-        while remainder not in stack:
-            stack.append(remainder)
-            n, remainder = divmod(remainder*10, abs(denominator))
-            result.append(str(n))
-
-        idx = stack.index(remainder)
-        result.insert(idx+2, '(')
-        result.append(')')
-        return ''.join(result).replace('(0)', '').rstrip('.')
+        neg = (dividend < 0) ^ (divisor < 0)
+        dividend, divisor = abs(dividend), abs(divisor)
+        ans = 0
+        while dividend >= divisor:
+            tmp, i = divisor, 1
+            while dividend >= tmp:
+                dividend -= tmp
+                ans += i
+                tmp = tmp << 1
+                i = i << 1
+        if neg:
+            ans = -ans
+        return min(max(-2147483648, ans), 2147483647)
