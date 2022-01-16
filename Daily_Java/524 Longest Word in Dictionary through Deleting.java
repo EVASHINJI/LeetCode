@@ -1,38 +1,73 @@
-// Url: https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
+// Url: https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/
 // Related Topics:
-// LinkedList TwoPointers
+// Array TwoPointers String Sorting
 
 // Example 1:
-// Input: head = [1,2,3,3,4,4,5]
-// Output: [1,2,5]
+// Input: s = "abpcplea", dictionary = ["ale","apple","monkey","plea"]
+// Output: "apple"
 
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
-class Solution {
-    public ListNode deleteDuplicates(ListNode head) {
-        if (head == null || head.next == null) return head;
-        ListNode fakeHead = new ListNode(head.val - 1, head);
-
-        ListNode pred = fakeHead;
-        while (head != null) {
-            if (head.next != null && head.val == head.next.val) {
-                while (head.next != null && head.val == head.next.val) {
-                    head = head.next;
-                }
-                pred.next = head.next;
-            } else {
-                pred = head;
+class Solution1 {
+    public boolean check(String s, String word) {
+        int p1 = 0;
+        int p2 = 0;
+        while (p1 < s.length() && p2 < word.length()) {
+            if (s.charAt(p1) == word.charAt(p2)) {
+                p2++;
             }
-            head = head.next;
+            p1++;
         }
-        return fakeHead.next;
+        return p2 == word.length();
+    }
+
+    public String findLongestWord(String s, List<String> dictionary) {
+        dictionary.sort((d1, d2) -> {
+            if (d1.length() != d2.length()) {
+                return d2.length() - d1.length();
+            }
+            return d1.compareTo(d2);
+        });
+        for (String word : dictionary) {
+            if (check(s, word)) return word;
+        }
+        return "";
+    }
+}
+
+class Solution2 {
+    public String findLongestWord(String s, List<String> dictionary) {
+        int[][] dp = new int[s.length()+1][26];
+        Arrays.fill(dp[s.length()], s.length());
+        // 构造动态规划数组
+        for (int i = s.length() - 1; i >= 0; i--) {
+            for (int j = 0; j < 26; j++) {
+                char c = (char)('a' + j);
+                if (s.charAt(i) == c) {
+                    dp[i][j] = i;
+                } else {
+                    dp[i][j] = dp[i+1][j];
+                }
+            }
+        }
+
+        // 字典排序
+        dictionary.sort((d1, d2) -> {
+            if (d1.length() != d2.length()) {
+                return d2.length() - d1.length();
+            }
+            return d1.compareTo(d2);
+        });
+
+        for (String word : dictionary) {
+            int p1 = 0;
+            int p2 = 0;
+            while (p2 < word.length()) {
+                p1 = dp[p1][word.charAt(p2)-'a'];
+                if (p1 == s.length()) break;
+                p1++;
+                p2++;
+            }
+            if (p2 == word.length()) return word;
+        }
+        return "";
     }
 }
